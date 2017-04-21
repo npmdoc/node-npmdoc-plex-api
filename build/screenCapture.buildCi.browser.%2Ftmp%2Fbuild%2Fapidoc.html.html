@@ -1,0 +1,180 @@
+<html><head></head><body><div class="apidocDiv">
+<style>
+/*csslint
+*/
+.apidocDiv {
+    background: #fff;
+    font-family: Arial, Helvetica, sans-serif;
+}
+.apidocDiv a[href] {
+    color: #33f;
+    font-weight: bold;
+    text-decoration: none;
+}
+.apidocDiv a[href]:hover {
+    text-decoration: underline;
+}
+.apidocCodeCommentSpan {
+    background: #bbf;
+    color: #000;
+    display: block;
+}
+.apidocCodeKeywordSpan {
+    color: #d00;
+    font-weight: bold;
+}
+.apidocCodePre {
+    background: #eef;
+    border: 1px solid;
+    color: #777;
+    padding: 5px;
+    white-space: pre-wrap;
+}
+.apidocFooterDiv {
+    margin-top: 20px;
+    text-align: center;
+}
+.apidocModuleLi {
+    margin-top: 10px;
+}
+.apidocSectionDiv {
+    border-top: 1px solid;
+    margin-top: 20px;
+}
+.apidocSignatureSpan {
+    color: #777;
+    font-weight: bold;
+}
+</style>
+<h1>api documentation for
+    <a>plex-api (v5.1.0)</a>
+</h1>
+<h4>Simple wrapper for querying against HTTP API on the Plex Media Server</h4>
+<div class="apidocSectionDiv"><a href="#apidoc.tableOfContents" id="apidoc.tableOfContents"><h1>table of contents</h1></a><ol>
+
+    <li class="apidocModuleLi"><a href="#apidoc.module.plex-api">module plex-api</a><ol>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.plex-api.plex-api">
+            function <span class="apidocSignatureSpan"></span>plex-api
+            <span class="apidocSignatureSpan">(options, deprecatedPort)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <span class="apidocSignatureSpan">object <span class="apidocSignatureSpan">plex-api.</span>uri</span>
+
+        </li>
+
+    </ol></li>
+
+    <li class="apidocModuleLi"><a href="#apidoc.module.plex-api.uri">module plex-api.uri</a><ol>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.plex-api.uri.attach">
+            function <span class="apidocSignatureSpan">plex-api.uri.</span>attach
+            <span class="apidocSignatureSpan">(parentUrl)</span>
+            </a>
+
+        </li>
+
+    </ol></li>
+
+</ol></div>
+
+<div class="apidocSectionDiv">
+<h1><a href="#apidoc.module.plex-api" id="apidoc.module.plex-api">module plex-api</a></h1>
+
+
+    <h2>
+        <a href="#apidoc.element.plex-api.plex-api" id="apidoc.element.plex-api.plex-api">
+        function <span class="apidocSignatureSpan"></span>plex-api
+        <span class="apidocSignatureSpan">(options, deprecatedPort)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function PlexAPI(options, deprecatedPort) {
+    var opts = options || {};
+    var hostname = typeof options === 'string' ? options : options.hostname;
+
+    this.hostname = hostname;
+    this.port = deprecatedPort || opts.port || PLEX_SERVER_PORT;
+    this.https = opts.https;
+    this.timeout = opts.timeout;
+    this.username = opts.username;
+    this.password = opts.password;
+    this.managedUser = opts.managedUser;
+    this.authToken = opts.token;
+    this.authenticator = opts.authenticator || this._credentialsAuthenticator();
+    this.responseParser = opts.responseParser || this._defaultResponseParser;
+    this.options = opts.options || {};
+    this.options.identifier = this.options.identifier || uuid.v4();
+    this.options.product = this.options.product || 'Node.js App';
+    this.options.version = this.options.version || '1.0';
+    this.options.device = this.options.device || os.platform();
+    this.options.deviceName = this.options.deviceName || 'Node.js App';
+    this.options.platform = this.options.platform || 'Node.js';
+    this.options.platformVersion = this.options.platformVersion || process.version;
+
+    if (typeof this.hostname !== 'string') {
+        throw new TypeError('Invalid Plex Server hostname');
+    }
+    if (typeof deprecatedPort !== 'undefined') {
+        console.warn('PlexAPI constuctor port argument is deprecated, use an options object instead.');
+    }
+
+    this.serverUrl = hostname + ':' + this.port;
+    this._initializeAuthenticator();
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+
+</div>
+
+<div class="apidocSectionDiv">
+<h1><a href="#apidoc.module.plex-api.uri" id="apidoc.module.plex-api.uri">module plex-api.uri</a></h1>
+
+
+    <h2>
+        <a href="#apidoc.element.plex-api.uri.attach" id="apidoc.element.plex-api.uri.attach">
+        function <span class="apidocSignatureSpan">plex-api.uri.</span>attach
+        <span class="apidocSignatureSpan">(parentUrl)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function attach(parentUrl) {
+    return function resolveAndAttachUris(result) {
+        var children = result._children || [];
+
+        children.forEach(function(child) {
+            var childType = child._elementType.toLowerCase();
+            var resolver = uriResolvers[childType];
+
+            if (resolver) {
+                resolver(parentUrl, child);
+            }
+        });
+
+        return result;
+    };
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+</div>
+
+<div class="apidocFooterDiv">
+    [ this document was created with
+    <a href="https://github.com/kaizhu256/node-utility2" target="_blank">utility2</a>
+    ]
+</div>
+</div>
+</body></html>
